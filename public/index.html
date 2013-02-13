@@ -3,19 +3,64 @@
 <head>
 	<meta charset="UTF-8">
 	<title>My Application</title>
+	<link rel="stylesheet" href="/public/css/application.css">
+	<link rel="stylesheet" href="/public/jquery.mCustomScrollbar.css"></link>
 </head>
 <body>
 	<div class="content">
-		<script type="text/x-handlebars">
-			<div class="application">
-				<p>Hello from Ember.JS!</p>
-			</div>
-		</script>
+		<!-- <h1 class="title">Chatapp</h1> -->
+
+		<div id="wrapper">
+			<script type="text/x-handlebars"  data-template-name="application">
+					<div id="online">
+						<ul class="usersonline">
+
+						</ul>
+					</div>
+
+					<div id="body">
+						<div id="status"></div>
+						<div id="chat">
+							<ul class="chatlist">
+								{{#each Chat.messageContoller.messages}}
+									<li class="usermessage">
+										<div id="messagecontainer">
+											<div class="username">{{name}}: </div>
+											<div class="usermessage">{{message}}</div>
+										</div>
+									</li>
+								{{/each}}
+							</ul>
+						</div>
+					</div>
+
+					<div id="input">
+						<form id="chatform">
+							{{view Chat.EnterNameView id="nickname" class="chat-input" placeholder="Enter a nickname to begin!"}}
+							{{view Chat.CreateMessageView id="message" class="chat-input" placeholder="Your Message"}}
+							<input type="submit" id="send" value="Send!"></input>
+						</form>
+					</div>
+					<div class="clear"></div>
+			</script>
+		</div>
 	</div>
 
-	<script src="/js/libs/jquery-1.9.1.min.js"></script>
-	<script src="/js/libs/handlebars.js"></script>
-	<script src="/js/libs/ember.js"></script>
-	<script src="/js/app.js"></script>
+	<!-- Ember JS -->
+	<script src="/public/js/vendor/jquery-1.9.1.min.js"></script>
+	<script src="/public/js/vendor/handlebars.js"></script>
+	<script src="/public/js/vendor/ember.js"></script>
+
+	<!-- ChatApp Libs -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+	<script src="/public/js/vendor/jquery.mousewheel.min.js"></script>
+	<script src="/public/js/vendor/jquery.mCustomScrollbar.js"></script>
+	<script src="/public/js/vendor/tabindent.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+
+	<!-- Application -->
+	<script src="/public/js/app.js"></script>
+
+	
 </body>
 </html>

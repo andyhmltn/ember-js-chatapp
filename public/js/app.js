@@ -16,15 +16,14 @@ $(function() {
 		name: null
 	});
 
+	Chat.User = Ember.Object.extend({
+		name: null
+	});
+
 	Chat.MessageController = Ember.Controller.extend({
 		messages: Ember.A(),
 
-		init: function()
-		{
-			messages = this.get('messages');
-
-			// items.addObject(Todos.Todo.create({title: 'Another Item'}));
-		},
+		init: function() {},
 		
 		createMessage: function(message, user)
 		{
@@ -32,7 +31,26 @@ $(function() {
 		}	
 	});
 
-	Chat.messageContoller = Chat.MessageController.create();
+	Chat.UserController = Ember.Controller.extend({
+		users: Ember.A(),
+
+		init: function() {},
+
+		createUser: function(name)
+		{
+			this.get('users').addObject(Chat.User.create({name:name}));
+		},
+
+		removeUser: function(property, value)
+		{
+			object = this.findProperty(property, value);
+
+			this.removeObject(object);
+		}
+	});
+
+	Chat.messageController = Chat.MessageController.create();
+	Chat.userController = Chat.UserController.create();
 
 	Chat.EnterNameView = Ember.TextArea.extend({
 		insertNewline: function(e) {
@@ -59,7 +77,7 @@ $(function() {
 
 				var user = Chat.currentuser;
 
-				if(user != null) Chat.messageContoller.createMessage(value, user);
+				if(user != null) Chat.messageController.createMessage(value, user);
 				Chat.socket.emit('messages', value);
 			}
 		}
@@ -68,10 +86,30 @@ $(function() {
 	Chat.socket.on('messages', function(data) {
 		data = JSON.parse(data);
 
-		Chat.messageContoller.createMessage(data.message.replace("<br />","\n"), data.name);
+		Chat.messageController.createMessage(data.message.replace("<br />","\n"), data.name);
 
 		Chat.scroll_to_bottom();
 	});
 
+	Chat.socket.on('chatters', function(data) {
+		data = JSON.parse(data);
+
+		$.each(data, function(key, value) {
+			Chat.userController.createUser(value);
+		});
+	});
+
+	Chat.socket.on('remove chatter', function(name) {
+		Chat.userController.removeUser('name', name);
+	});
+
+	Chat.socket.on('add chatter', function(name) {
+		Chat.userController.createUser(name);
+	});
+
 	Chat.scroll_to_bottom();
+
+	$(window).unload(function() {
+		Chat.socket.disconnect();
+	});
 });

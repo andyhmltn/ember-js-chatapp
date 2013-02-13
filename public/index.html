@@ -14,7 +14,11 @@
 			<script type="text/x-handlebars"  data-template-name="application">
 					<div id="online">
 						<ul class="usersonline">
-
+							{{#each Chat.userController.users}}
+								<li>
+									{{name}}
+								</li>
+							{{/each}}
 						</ul>
 					</div>
 
@@ -22,7 +26,7 @@
 						<div id="status"></div>
 						<div id="chat">
 							<ul class="chatlist">
-								{{#each Chat.messageContoller.messages}}
+								{{#each Chat.messageController.messages}}
 									<li class="usermessage">
 										<div id="messagecontainer">
 											<div class="username">{{name}}: </div>

@@ -26,11 +26,15 @@ var storeMessage = function(name, data) {
   });
 };
 
+var current_users = [];
+
 // Listen for connections
 io.sockets.on('connection', function(socket) {
   
   socket.on('join', function(name) {
-    console.log('name');
+
+    current_users.push(name.replace('\n', ''));
+
     redis.lrange("messages", 0, -1, function(err, messages){
       messages = messages.reverse();
       messages.forEach(function(message) {
@@ -46,12 +50,15 @@ io.sockets.on('connection', function(socket) {
     socket.set('nickname', name);
     socket.broadcast.emit("add chatter", name);
     socket.emit("add chatter", name);
+
     redis.smembers('names', function(err, names) {
       names.forEach(function(name) {
         socket.emit('add chatter', name);
       });
     });
     redis.sadd("chatters", name);
+    socket.emit('chatters', JSON.stringify(current_users));
+
   });
 
   // Receive messages from the client and broadcast them to everyone
@@ -69,6 +76,21 @@ io.sockets.on('connection', function(socket) {
     });
   });
 
+  socket.on('disconnect',function() {
+  //insert data corresponding to current socket into database
+    socket.get('nickname', function(error, name) {
+      if(name != null) {
+         console.log('The client has disconnected! Username: %s', name);
+
+        var index = current_users.indexOf(name.replace('\n', ''));
+
+        current_users.splice(name, 1);
+
+        socket.emit("remove chatter", name);
+      }
+    });
+  });
+
 });
 
 // Without this line, the CSS will not work
@@ -77,6 +99,9 @@ app.use('/public', express.static(__dirname + '/public'));
 // Route index.html to the root path
 app.get('/', function(request, response) {
 	response.sendfile(__dirname + "/public/index.html");
+
+  request.on('close', function() { console.log('ENDED!!!!'); });
+  request.on('end', function() { console.log('ENDED!!!!'); });
 });
 
 // Listen for GET requests to the server

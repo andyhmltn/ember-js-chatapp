@@ -1,0 +1,137 @@
+body {
+  margin:  0;
+  padding:  0;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background: #eee;
+}
+
+a {
+  color: #00B7FF;
+}
+
+#wrapper {
+    margin: 0 auto;
+    width:  940px;
+    height: 500px;
+    padding: 0;
+    border: 1px solid #000;
+    background: #fff;
+    box-shadow: 4px 4px 20px rgba(0,0,0,0.2), -4px -4px 20px rgba(0,0,0,0.2);
+}
+
+#online {
+    float: left;
+    width: 188px;
+    height: 480px;
+    padding: 10px;
+    border-right: 1px solid #000;
+}
+
+#body {
+    float: left;
+    width: 731px;
+    height: 439px;
+    padding: 0;
+    border-bottom: 1px solid #000;
+}
+
+#status {
+    height: 30px;
+    border-bottom: 1px solid #000;
+    padding-left: 10px;
+    line-height: 30px;
+}
+
+#chat {
+    height: 388px;
+    padding: 0px;
+}
+
+#input {
+    float: left;
+    height: 60px;
+    width: 731px;
+}
+
+.clear {
+    clear: both;
+}
+
+h1.title {
+    text-align: center;
+}
+
+textarea.chat-input {
+    float: left;
+    margin: 0;
+    width: 630px;
+    height: 40px;
+    max-height: 40px;
+    border: none;
+    padding: 10px;
+    box-shadow: inset 1px 1px 3px rgba(0,0,0,0.3);
+    resize: none;
+}
+
+textarea.chat-input:focus {
+    border: none;
+    outline: none;
+    box-shadow: inset 1px 1px 3px green, inset -1px -1px 3px green;
+}
+
+textarea#message { display: none; }
+
+input#send {
+    float: left;
+    background: #55ba57;
+    color: #fff;
+    border: none;
+    height: 60px;
+    margin: 0;
+    width: 81px;
+    border-left: 1px solid #000;
+}
+
+input#send:hover {
+    background: #489949;
+    cursor: pointer;
+}
+
+input#send:active {
+    background: #1e7520;
+}
+ul.chatlist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.chatlist li {
+    margin-top: -1px;
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    background: #eee;
+}
+
+li.connected {
+    color: green;
+    padding: 10px;
+}
+li.disconnected {
+    color: red;
+    padding: 10px;
+}
+
+li .username {
+    background: #777;
+    color: #ccc;
+    padding: 10px;
+}
+
+li .usermessage {
+    padding: 10px;
+}
+
+#messagecontainer {
+    
+}

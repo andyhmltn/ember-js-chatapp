@@ -2,7 +2,8 @@ $(function() {
 	Chat = Ember.Application.create({
 		rootElement: '#wrapper',
 		socket: new io.connect(window.location.hostname),
-		currentUser: null
+		currentUser: null,
+		nameEntered: false
 	});
 
 	Chat.scroll_to_bottom = function() { 
@@ -60,10 +61,12 @@ $(function() {
 				this.set('value', null);
 
 				Chat.socket.emit('join', value);
+				Chat.set('nameEntered', true);
 
-				$('#message').show();
+				console.log(Chat.get('nameEntered'));
+				// $('#message').show();
 
-				this.remove();
+				// this.remove();
 			}
 		}
 	});

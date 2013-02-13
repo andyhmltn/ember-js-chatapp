@@ -40,8 +40,12 @@
 
 					<div id="input">
 						<form id="chatform">
-							{{view Chat.EnterNameView id="nickname" class="chat-input" placeholder="Enter a nickname to begin!"}}
-							{{view Chat.CreateMessageView id="message" class="chat-input" placeholder="Your Message"}}
+							{{#if Chat.nameEntered }}
+								{{view Chat.CreateMessageView id="message" class="chat-input" placeholder="Your Message"}}
+							{{else}}
+								{{view Chat.EnterNameView id="nickname" class="chat-input" placeholder="Enter a nickname to begin!"}}
+							{{/if}}
+							
 							<input type="submit" id="send" value="Send!"></input>
 						</form>
 					</div>

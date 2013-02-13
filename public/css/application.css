@@ -79,8 +79,6 @@ textarea.chat-input:focus {
     box-shadow: inset 1px 1px 3px green, inset -1px -1px 3px green;
 }
 
-textarea#message { display: none; }
-
 input#send {
     float: left;
     background: #55ba57;

@@ -35,7 +35,15 @@ $(function() {
 	Chat.UserController = Ember.Controller.extend({
 		users: Ember.A(),
 
-		init: function() {},
+		init: function() {
+			stored_name = localStorage.getItem('chatapp:username') 
+			if(stored_name!= null) {
+				Chat.set('currentUser', stored_name);
+				Chat.set('nameEntered', true);
+
+				Chat.socket.emit('join', stored_name);
+			}
+		},
 
 		createUser: function(name)
 		{
@@ -63,10 +71,7 @@ $(function() {
 				Chat.socket.emit('join', value);
 				Chat.set('nameEntered', true);
 
-				console.log(Chat.get('nameEntered'));
-				// $('#message').show();
-
-				// this.remove();
+				localStorage.setItem('chatapp:username', value);
 			}
 		}
 	});

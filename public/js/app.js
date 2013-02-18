@@ -1,54 +1,54 @@
 $(function() {
   "use strict";
-  var Chat;
+  var App;
   var socket = io.connect(window.location.hostname);
-  Chat = Ember.Application.create({
+  App = Ember.Application.create({
     rootElement: '#wrapper',
     socket: socket,
     currentUser: null,
     nameEntered: false
   });
 
-  Chat.scrollToBottom = function() { 
+  App.scrollToBottom = function() { 
     setTimeout(function(){
-      $(".chatlist").scrollTop($(".chatlist")[0].scrollHeight);
+      $('.chatlist').scrollTop($('.chatlist')[0].scrollHeight);
     }, 500);
   };
 
-  Chat.Message = Ember.Object.extend({
+  App.Message = Ember.Object.extend({
     message: null,
     name: null
   });
 
-  Chat.User = Ember.Object.extend({
+  App.User = Ember.Object.extend({
     name: null
   });
 
-  Chat.MessageController = Ember.Controller.extend({
+  App.MessageController = Ember.Controller.extend({
     messages: Ember.A(),
 
     init: function() {},
 
     createMessage: function(message, user) {
-      this.get('messages').addObject(Chat.Message.create({message:message, name:user}));
+      this.get('messages').addObject(App.Message.create({message:message, name:user}));
     }	
   });
 
-  Chat.UserController = Ember.Controller.extend({
+  App.UserController = Ember.Controller.extend({
     users: Ember.A(),
 
     init: function() {
       var storedName = localStorage.getItem('chatapp:username');
       if(storedName !== null) {
-        Chat.set('currentUser', storedName);
-        Chat.set('nameEntered', true);
+        App.set('currentUser', storedName);
+        App.set('nameEntered', true);
 
-        Chat.socket.emit('join', storedName);
+        App.socket.emit('join', storedName);
       }
     },
 
     createUser: function(name) {
-      this.get('users').addObject(Chat.User.create({name:name}));
+      this.get('users').addObject(App.User.create({name:name}));
     },
 
     removeUser: function(property, value) {
@@ -57,75 +57,79 @@ $(function() {
     }
   });
 
-  Chat.messageController = Chat.MessageController.create();
-  Chat.userController = Chat.UserController.create();
+  App.messageController = App.MessageController.create();
+  App.userController = App.UserController.create();
 
-  Chat.EnterNameView = Ember.TextArea.extend({
-    insertNewline: function(e) {
-      e.preventDefault();
-      var value = this.get('value');
-
-      if (value !== null) {
-        this.set('value', null);
-
-        Chat.socket.emit('join', value);
-        Chat.set('nameEntered', true);
-
-        localStorage.setItem('chatapp:username', value);
-      }
-    }
-  });
-
-  Chat.CreateMessageView = Ember.TextArea.extend({
+  App.EnterNameView = Ember.TextArea.extend({
     insertNewline: function() {
       var value = this.get('value');
 
       if (value !== null) {
         this.set('value', null);
 
-        var user = Chat.currentuser;
+        App.socket.emit('join', value);
+        App.set('nameEntered', true);
 
-        if (user !== null) {
-          Chat.messageController.createMessage(value, user);
-        }
-        Chat.socket.emit('messages', value);
+        localStorage.setItem('chatapp:username', value);
       }
     }
   });
 
-  Chat.socket.on('messages', function(data) {
-    data = JSON.parse(data);
+  App.CreateMessageView = Ember.TextArea.extend({
+    insertNewline: function() {
+      var value = this.get('value');
 
-    Chat.messageController.createMessage(data.message.replace("<br />","\n"), data.name);
+      if (value !== null) {
+        this.set('value', null);
 
-    Chat.scrollToBottom();
+        var user = App.currentuser;
+
+        if (user !== null) {
+          App.messageController.createMessage(value, user);
+        }
+        App.socket.emit('messages', value);
+      }
+    }
   });
 
-  Chat.socket.on('chatters', function(data) {
+  App.socket.on('messages', function(data) {
+    data = JSON.parse(data);
+
+    App.messageController.createMessage(data.message.replace("<br />","\n"), data.name);
+
+    App.scrollToBottom();
+  });
+
+  App.socket.on('chatters', function(data) {
     data = JSON.parse(data);
 
     $.each(data, function(key, value) {
-      Chat.userController.createUser(value);
+      App.userController.createUser(value);
     });
   });
 
-  Chat.socket.on('remove chatter', function(name) {
-    Chat.userController.removeUser('name', name);
+  App.socket.on('remove chatter', function(name) {
+    App.userController.removeUser('name', name);
   });
 
-  Chat.socket.on('add chatter', function(name) {
-    Chat.userController.createUser(name);
+  App.socket.on('add chatter', function(name) {
+    App.userController.createUser(name);
   });
 
-  Chat.scrollToBottom();
+  App.scrollToBottom();
 
   $(window).unload(function() {
-    Chat.socket.disconnect();
+    App.socket.disconnect();
   });
+<<<<<<< HEAD
 <<<<<<< HEAD
 });
 =======
   
   return window.Chat = Chat;
+=======
+
+  return window.Chat = App;
+>>>>>>> 54266ec... Made app more generic for code reuse
 });
 >>>>>>> e1c8a52... return  Chat as a global

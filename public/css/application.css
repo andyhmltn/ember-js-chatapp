@@ -101,7 +101,10 @@ input#send:active {
 ul.chatlist {
     list-style: none;
     margin: 0;
+    overflow: none;
+    overflow-y: scroll;
     padding: 0;
+    height: 408px;
 }
 
 .chatlist li {

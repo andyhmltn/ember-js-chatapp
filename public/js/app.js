@@ -98,7 +98,7 @@ $(function() {
 
     Chat.messageController.createMessage(data.message.replace("<br />","\n"), data.name);
 
-    Chat.scroll_to_bottom();
+    Chat.scrollToBottom();
   });
 
   Chat.socket.on('chatters', function(data) {
@@ -117,9 +117,15 @@ $(function() {
     Chat.userController.createUser(name);
   });
 
-  Chat.scroll_to_bottom();
+  Chat.scrollToBottom();
 
   $(window).unload(function() {
     Chat.socket.disconnect();
   });
+<<<<<<< HEAD
 });
+=======
+  
+  return window.Chat = Chat;
+});
+>>>>>>> e1c8a52... return  Chat as a global

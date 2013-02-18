@@ -13,12 +13,6 @@ if (process.env.REDISTOGO_URL) {
   var redis = require("redis").createClient();
 }
 
-// assuming io is the Socket.IO server object
-io.configure(function () { 
-  io.set("transports", ["xhr-polling"]); 
-  io.set("polling duration", 10); 
-});
-
 var storeMessage = function(name, data) {
   var message = JSON.stringify({name: name, data: data});
   redis.lpush("messages", message, function(err, response) {

@@ -84,9 +84,6 @@ $(function() {
 
         var user = App.currentuser;
 
-        if (user !== null) {
-          App.messageController.createMessage(value, user);
-        }
         App.socket.emit('messages', value);
       }
     }
@@ -121,15 +118,6 @@ $(function() {
   $(window).unload(function() {
     App.socket.disconnect();
   });
-<<<<<<< HEAD
-<<<<<<< HEAD
-});
-=======
-  
-  return window.Chat = Chat;
-=======
 
   return window.Chat = App;
->>>>>>> 54266ec... Made app more generic for code reuse
 });
->>>>>>> e1c8a52... return  Chat as a global

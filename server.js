@@ -27,8 +27,6 @@ io.sockets.on('connection', function(socket) {
   
   socket.on('join', function(name) {
 
-    current_users.push(name.replace('\n', ''));
-
     redis.lrange("messages", 0, -1, function(err, messages){
       messages = messages.reverse();
       messages.forEach(function(message) {
@@ -48,6 +46,7 @@ io.sockets.on('connection', function(socket) {
     redis.smembers('names', function(err, names) {
       names.forEach(function(name) {
         socket.emit('add chatter', name);
+        current_users.push(name.replace('\n', ''));
       });
     });
     redis.sadd("chatters", name);

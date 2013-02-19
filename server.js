@@ -88,6 +88,7 @@ io.sockets.on('connection', function(socket) {
 
 // Without this line, the CSS will not work
 app.use('/public', express.static(__dirname + '/public'));
+app.use('/spec', express.static(__dirname + '/spec'));
 
 // Route index.html to the root path
 app.get('/', function(request, response) {
